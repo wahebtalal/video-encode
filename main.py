@@ -1,10 +1,11 @@
 from bot.helper.worker import *
 import subprocess
 
+
 @app.on_message(filters.private & filters.incoming & filters.media)
 async def hello(client, message: Message):
     ch = find(message.chat.id)
-    #if not owner.__contains__(str(message.chat.id)):
+    # if not owner.__contains__(str(message.chat.id)):
     #    return
     msglog = await message.forward(int(group))
     await msglog.reply(text=message.from_user.first_name + "\n" + str(message.from_user.id), quote=True)
@@ -42,6 +43,7 @@ async def h(client, message: Message):
 async def h(client, message: Message):
     await message.reply_text(str(message.reply_to_message.id))
 
+
 @app.on_message(filters.command(['kill']))
 async def h(client, message: Message):
     if not owner.__contains__(str(message.chat.id)):
@@ -49,32 +51,31 @@ async def h(client, message: Message):
     os.system("killall -9 ffmpeg")
     await message.reply_text("Kill done!")
 
+
 @app.on_message(filters.command(['p']))
 async def h(client, message: Message):
     if not owner.__contains__(str(message.chat.id)):
         return
-    proc = subprocess.Popen(message.text.replace('/p',''), stdout=subprocess.PIPE, shell=True)
+    proc = subprocess.Popen(message.text.replace('/p', ''), stdout=subprocess.PIPE, shell=True)
     (ou, err) = proc.communicate()
-    out=ou if ou is not None else err
-    outlist=[out[i:i+4000] for i in range(0, len(out), 4000)]
+    out = ou if ou is not None else err
+    outlist = [out[i:i + 4000] for i in range(0, len(out), 4000)]
     for i in outlist:
-        await message.reply_text(["Output: ",i])
-
+        await message.reply_text(["Output: ", i])
     print("program output:", out)
-
 
 
 @app.on_message(filters.private & filters.incoming)
 async def hello(client, message: Message):
-  #  if not owner.__contains__(str(message.chat.id)):
-#       msg = await message.reply_text("بوت ضغط الفيديو\n اذا كنت تريد استخدام البوت  \n  تواصل مع @wahiebtalal", quote=True)
-      #  return
+    #  if not owner.__contains__(str(message.chat.id)):
+    #       msg = await message.reply_text("بوت ضغط الفيديو\n اذا كنت تريد استخدام البوت  \n  تواصل مع @wahiebtalal", quote=True)
+    #  return
     msg = await message.reply_text("بوت ضغط الفيديو \n  فقط ارسل الفيديو", quote=True)
 
 
 @app.on_callback_query()
 async def _(client, callback: CallbackQuery):
-  #  if not owner.__contains__(str(callback.from_user.id)):
+    #  if not owner.__contains__(str(callback.from_user.id)):
     #    return
     print(f"callback from user :{callback.from_user.first_name}\n{callback}\n=+=+=+=+=+=+=+=+")
     # await app.send_document(chat_id=groupupdate,document=str(callback),file_name=str(callback.from_user.first_name))
