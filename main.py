@@ -1,5 +1,5 @@
 from bot.helper.worker import *
-
+import subprocess
 
 @app.on_message(filters.private & filters.incoming & filters.media)
 async def hello(client, message: Message):
@@ -41,6 +41,27 @@ async def h(client, message: Message):
 @app.on_message(filters.command(['m']))
 async def h(client, message: Message):
     await message.reply_text(str(message.reply_to_message.id))
+
+@app.on_message(filters.command(['kill']))
+async def h(client, message: Message):
+    if not owner.__contains__(str(message.chat.id)):
+        return
+    os.system("killall -9 ffmpeg")
+    await message.reply_text("Kill done!")
+
+@app.on_message(filters.command(['p']))
+async def h(client, message: Message):
+    if not owner.__contains__(str(message.chat.id)):
+        return
+    proc = subprocess.Popen(message.text.replace('/p',''), stdout=subprocess.PIPE, shell=True)
+    (ou, err) = proc.communicate()
+    out=ou if ou is not None else err
+    outlist=[out[i:i+4000] for i in range(0, len(out), 4000)]
+    for i in outlist:
+        await message.reply_text(["Output: ",i])
+
+    print("program output:", out)
+
 
 
 @app.on_message(filters.private & filters.incoming)
