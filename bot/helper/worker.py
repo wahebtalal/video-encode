@@ -57,7 +57,7 @@ async def UProgress(current: int, total, chatid, mesgid):
 
 async def add_queue(msg: []):
     print("add_queue")
-    if len(q) != 0 & is_admin(msg[0]):
+    if len(q) != 0 and is_admin(msg[0]):
         q.insert(1, msg)
     else:
         q.append(msg)
