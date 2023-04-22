@@ -58,7 +58,11 @@ def unban(id):
 def is_ban(id):
     mycursor = mydb.cursor()
     mycursor.execute("select ban from Users where id = %s", [id])
-    return mycursor.fetchone()
+    if mycursor.fetchone().__contains__(1):
+        print(True)
+        return True
+    else:
+        return False
 
 
 def admin_change(id, admin):
@@ -78,7 +82,11 @@ def unadmin(id):
 def is_admin(id):
     mycursor = mydb.cursor()
     mycursor.execute("select admin from Users where id = %s ", [id])
-    return mycursor.fetchone()
+    if mycursor.fetchone().__contains__(1):
+        return True
+    else:
+        return
+    False
 
 
 def set_limit(lim):
@@ -91,7 +99,3 @@ def set_limit(id, lim):
     mycursor = mydb.cursor()
     mycursor.execute("update Users set lim = %s where id  = %s", [lim, id])
     mydb.commit()
-
-
-admin(112)
-print(is_admin(112))
