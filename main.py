@@ -71,7 +71,7 @@ async def h(client, message: Message):
         await message.reply_text("خطا!")
         return
     admin(message.command[1])
-    await app.send_message(message.command[1], "لد تم تريتك ال مرف ♤")
+    await app.send_message(message.command[1], "لقد تم ترقيتك الى مشرف ♤")
     await message.reply_text(" done!")
 
 
@@ -83,7 +83,7 @@ async def h(client, message: Message):
         await message.reply_text("خطا!")
         return
     unadmin(message.command[1])
-    await app.send_message(message.command[1], "لم تد مرفا♤")
+    await app.send_message(message.command[1], "لم تعد مشرفاً بعد الآن ♤")
     await message.reply_text(" done!")
 
 
@@ -106,7 +106,7 @@ async def h(client, message: Message):
         await message.reply_text("خطا!")
         return
     unban(message.command[1])
-    await app.send_message(message.command[1], "you r unban")
+    await app.send_message(message.command[1], "تم إلغاء الحظر ♤")
     await message.reply_text(" done!")
 
 
