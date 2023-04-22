@@ -29,7 +29,7 @@ def search(id):
     return mycursor.fetchone()
 
 
-def usage(id, duration):
+def usage_change(id, duration):
     mycursor = mydb.cursor()
     mycursor.execute("update Users set lim=lim- %s where id = %s", [duration, id])
     mydb.commit()
@@ -89,7 +89,7 @@ def is_admin(id):
     False
 
 
-def set_limit(lim):
+def set_limit_all(lim):
     mycursor = mydb.cursor()
     mycursor.execute("update Users set lim = %s", [lim])
     mydb.commit()

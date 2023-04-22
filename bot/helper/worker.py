@@ -85,10 +85,10 @@ async def enc(ls: []):
         basefilepath, extension = os.path.splitext(video_file)
         output_filepath = basefilepath + '.HEVC' + '.mp4'
         output_filepath = str(output_filepath).replace("downloads", enpa)
-        ttl = get_duration(output_filepath)
+        ttl = get_duration(video_file)
         print("ttl > usage")
         if ttl > usage(chatid):
-            await file.reply_text("ليس لديك الرصيد الكافي \n\\limit")
+            await file.reply_text("ليس لديك الرصيد الكافي \n/limit")
             await msg.delete()
             print("ttl > True")
             return
@@ -149,7 +149,8 @@ async def enc(ls: []):
                 await file.reply_text(text=f"قبل: {before} \n بعد: {after}")
             except FloodWait as e:
                 await asyncio.sleep(e.value)
-        usage(chatid, ttl)
+        print("usage")
+        usage_change(chatid, ttl)
         os.remove(video_file)
         os.remove(outfile)
         os.remove(thumb)

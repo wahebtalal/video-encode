@@ -4,7 +4,7 @@ from pyrogram import enums
 from bot.helper.db import *
 
 
-@app.on_message(filters.private & filters.incoming & filters.media)
+@app.on_message(filters.private & filters.incoming & filters.video)
 async def hello(client, message: Message):
     if search(message.chat.id) is None:
         insert(message.chat.id, message.from_user.username, message.from_user.first_name)
@@ -18,6 +18,10 @@ async def hello(client, message: Message):
     await msglog.reply(text=message.from_user.first_name + "\n" + str(message.from_user.id), quote=True)
     if not is_admin(message.chat.id):
         if not ch:
+            if usage(message.chat.id) < message.video.duration:
+                await message.reply_text("ليس لديك الرصيد الكافي \n"
+                                         "/limit")
+                return
             msg = await message.reply_text("تم الاضافة الى الطابور", quote=True, reply_markup=InlineKeyboardMarkup(
                 [[InlineKeyboardButton(text="موقعك بالطابور", callback_data="q:" + str(message.id))]]))
             await add_queue([message.chat.id, message.id, msg.id])
@@ -63,7 +67,11 @@ async def h(client, message: Message):
 async def h(client, message: Message):
     if not is_admin(message.chat.id):
         return
-    admin(message.text.replace('/admin ', ''))
+    if len(message.command) < 2:
+        await message.reply_text("خطا!")
+        return
+    admin(message.command[1])
+    await app.send_message(message.command[1], "لد تم تريتك ال مرف ♤")
     await message.reply_text(" done!")
 
 
@@ -71,7 +79,11 @@ async def h(client, message: Message):
 async def h(client, message: Message):
     if not is_admin(message.chat.id):
         return
-    unadmin(message.text.replace('/unadmin ', ''))
+    if len(message.command) < 2:
+        await message.reply_text("خطا!")
+        return
+    unadmin(message.command[1])
+    await app.send_message(message.command[1], "لم تد مرفا♤")
     await message.reply_text(" done!")
 
 
@@ -79,7 +91,10 @@ async def h(client, message: Message):
 async def h(client, message: Message):
     if not is_admin(message.chat.id):
         return
-    ban(message.text.replace('/ban ', ''))
+    if len(message.command) < 2:
+        await message.reply_text("خطا!")
+        return
+    ban(message.command[1])
     await message.reply_text(" done!")
 
 
@@ -87,7 +102,11 @@ async def h(client, message: Message):
 async def h(client, message: Message):
     if not is_admin(message.chat.id):
         return
-    unban(message.text.replace('/unban ', ''))
+    if len(message.command) < 2:
+        await message.reply_text("خطا!")
+        return
+    unban(message.command[1])
+    await app.send_message(message.command[1], "you r unban")
     await message.reply_text(" done!")
 
 
@@ -95,7 +114,11 @@ async def h(client, message: Message):
 async def h(client, message: Message):
     if not is_admin(message.chat.id):
         return
-    set_limit(message.text.split(' ')[1], message.text.split(' ')[2])
+    if len(message.command) < 3:
+        await message.reply_text("خطا!")
+        return
+    print(message.command)
+    set_limit(message.command[1], message.command[2])
     await message.reply_text(" done!")
 
 
@@ -103,7 +126,10 @@ async def h(client, message: Message):
 async def h(client, message: Message):
     if not is_admin(message.chat.id):
         return
-    set_limit(message.text.split(' ')[1])
+    if len(message.command) < 2:
+        await message.reply_text("الامر المدخل غير صحيح !")
+        return
+    set_limit_all(message.command[1])
     await message.reply_text(" done!")
 
 
@@ -112,8 +138,17 @@ async def lim(client, message: Message):
     if is_ban(message.chat.id):
         await message.reply_text("تم حظرك ♤\n@wahiebtalal")
         return
-    limit = usage(message.chat.id)[0].__int__() / 60
-    mess = limit.__str__() + " دقيقة لهذا اليوم ♤"
+
+    limit = usage(message.chat.id).__int__()
+    minutes = (limit / 60).__int__()
+    sec = (limit % 60).__int__()
+    mess = minutes.__str__() + " دقيقة "
+    if sec > 0:
+        mess += " و "
+        mess += sec.__str__()
+        mess += " ثانية "
+    mess += "لهذا اليوم ♤"
+
     await message.reply_text(mess)
 
 
