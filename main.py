@@ -59,6 +59,54 @@ async def h(client, message: Message):
     await message.reply_text("Kill done!")
 
 
+@app.on_message(filters.command(['admin']))
+async def h(client, message: Message):
+    if is_admin(message.chat.id).__contains__(0):
+        return
+    admin(message.text.replace('/admin ', ''))
+    await message.reply_text(" done!")
+
+
+@app.on_message(filters.command(['unadmin']))
+async def h(client, message: Message):
+    if is_admin(message.chat.id).__contains__(0):
+        return
+    unadmin(message.text.replace('/unadmin ', ''))
+    await message.reply_text(" done!")
+
+
+@app.on_message(filters.command(['ban']))
+async def h(client, message: Message):
+    if is_admin(message.chat.id).__contains__(0):
+        return
+    ban(message.text.replace('/ban ', ''))
+    await message.reply_text(" done!")
+
+
+@app.on_message(filters.command(['unban']))
+async def h(client, message: Message):
+    if is_admin(message.chat.id).__contains__(0):
+        return
+    unban(message.text.replace('/unban ', ''))
+    await message.reply_text(" done!")
+
+
+@app.on_message(filters.command(['slimit']))
+async def h(client, message: Message):
+    if is_admin(message.chat.id).__contains__(0):
+        return
+    set_limit(message.text.split(' ')[1], message.text.split(' ')[2])
+    await message.reply_text(" done!")
+
+
+@app.on_message(filters.command(['sl']))
+async def h(client, message: Message):
+    if is_admin(message.chat.id).__contains__(0):
+        return
+    set_limit(message.text.split(' ')[1])
+    await message.reply_text(" done!")
+
+
 @app.on_message(filters.command(['limit']))
 async def lim(client, message: Message):
     if is_ban(message.chat.id).__contains__(1):

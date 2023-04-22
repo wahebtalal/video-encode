@@ -55,7 +55,6 @@ async def encode(filepath, output_filepath):
     cmdl = (['ffmpeg', '-i', filepath] + video_opts.split() + audio_opts.split() + subtitle_opts.split() + [
         output_filepath, '-y'])
     cmd = ' '.join(cmdl)
-    print(cmd)
     await run(cmd)
     return output_filepath
 
