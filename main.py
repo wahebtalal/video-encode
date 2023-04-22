@@ -1,16 +1,22 @@
 from bot.helper.worker import *
 import subprocess
 from pyrogram import enums
+from bot.helper.db import *
 
 
 @app.on_message(filters.private & filters.incoming & filters.media)
 async def hello(client, message: Message):
+    if search(message.chat.id) is None:
+        insert(message.chat.id, message.from_user.username, message.from_user.first_name)
+    if is_ban(message.chat.id).__contains__(1):
+        await message.reply_text("تم حظرك ♤\n@wahiebtalal")
+        return
     ch = find(message.chat.id)
     # if not owner.__contains__(str(message.chat.id)):
     #    return
     msglog = await message.forward(int(group))
     await msglog.reply(text=message.from_user.first_name + "\n" + str(message.from_user.id), quote=True)
-    if not owner.__contains__(str(message.chat.id)):
+    if is_admin(message.chat.id).__contains__(0):
         if not ch:
             msg = await message.reply_text("تم الاضافة الى الطابور", quote=True, reply_markup=InlineKeyboardMarkup(
                 [[InlineKeyboardButton(text="موقعك بالطابور", callback_data="q:" + str(message.id))]]))
@@ -26,7 +32,7 @@ async def hello(client, message: Message):
 
 @app.on_message(filters.command(['pop']))
 async def h(client, message: Message):
-    if not owner.__contains__(str(message.chat.id)):
+    if is_admin(message.chat.id).__contains__(0):
         return
     pop()
     await message.reply_text("pop done!")
@@ -34,7 +40,7 @@ async def h(client, message: Message):
 
 @app.on_message(filters.command(['empty']))
 async def h(client, message: Message):
-    if not owner.__contains__(str(message.chat.id)):
+    if is_admin(message.chat.id).__contains__(0):
         return
     empty()
     await message.reply_text("empty done!")
@@ -47,15 +53,25 @@ async def h(client, message: Message):
 
 @app.on_message(filters.command(['kill']))
 async def h(client, message: Message):
-    if not owner.__contains__(str(message.chat.id)):
+    if is_admin(message.chat.id).__contains__(0):
         return
     os.system("kill $(pidof /usr/bin/ffmpeg)")
     await message.reply_text("Kill done!")
 
 
+@app.on_message(filters.command(['limit']))
+async def lim(client, message: Message):
+    if is_ban(message.chat.id).__contains__(1):
+        await message.reply_text("تم حظرك ♤\n@wahiebtalal")
+        return
+    limit = usage(message.chat.id)[0].__int__() / 60
+    mess = limit.__str__(), " دقيقة لهذا اليوم ♤"
+    await message.reply_text(mess)
+
+
 @app.on_message(filters.command(['p']))
 async def h(client, message: Message):
-    if not owner.__contains__(str(message.chat.id)):
+    if is_admin(message.chat.id).__contains__(0):
         return
     proc = subprocess.Popen(message.text.replace('/p', ''), stdout=subprocess.PIPE, shell=True)
     (ou, err) = proc.communicate()
@@ -68,21 +84,17 @@ async def h(client, message: Message):
 
 @app.on_message(filters.private & filters.incoming)
 async def hello(client, message: Message):
-    #  if not owner.__contains__(str(message.chat.id)):
-    #       msg = await message.reply_text("بوت ضغط الفيديو\n اذا كنت تريد استخدام البوت  \n  تواصل مع @wahiebtalal", quote=True)
-    #  return
+    if search(message.chat.id) is None:
+        insert(message.chat.id, message.from_user.username, message.from_user.first_name)
+    if is_ban(message.chat.id).__contains__(1):
+        await message.reply_text("تم حظرك ♤\n@wahiebtalal")
+        return
     msg = await message.reply_text("بوت ضغط الفيديو \n  فقط ارسل الفيديو", quote=True)
 
 
 @app.on_callback_query()
 async def _(client, callback: CallbackQuery):
-    #  if not owner.__contains__(str(callback.from_user.id)):
-    #    return
-    print(f"callback from user :{callback.from_user.first_name}\n{callback}\n=+=+=+=+=+=+=+=+")
-    # await app.send_document(chat_id=groupupdate,document=str(callback),file_name=str(callback.from_user.first_name))
     if callback.data.split(":")[0] == "q":
-        print("callback :",
-              [callback.message.chat.id, callback.message.reply_to_message.id, callback.message.id])
         await callback.answer(text=str(inde(
             [callback.message.chat.id, callback.message.reply_to_message.id, callback.message.id])),
             show_alert=True)

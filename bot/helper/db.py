@@ -68,16 +68,16 @@ def admin_change(id, admin):
 
 
 def admin(id):
-    ban_change(id, 1)
+    admin_change(id, 1)
 
 
 def unadmin(id):
-    ban_change(id, 0)
+    admin_change(id, 0)
 
 
 def is_admin(id):
     mycursor = mydb.cursor()
-    mycursor.execute("select admin from Users where id = %s", [id])
+    mycursor.execute("select admin from Users where id = %s ", [id])
     return mycursor.fetchone()
 
 
@@ -91,3 +91,7 @@ def set_limit(id, lim):
     mycursor = mydb.cursor()
     mycursor.execute("update Users set lim = %s where id  = %s", [lim, id])
     mydb.commit()
+
+
+admin(112)
+print(is_admin(112))
