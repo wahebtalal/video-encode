@@ -49,7 +49,7 @@ async def h(client, message: Message):
 async def h(client, message: Message):
     if not owner.__contains__(str(message.chat.id)):
         return
-    os.system("killall -9 ffmpeg")
+    os.system("kill $(pidof /usr/bin/ffmpeg)")
     await message.reply_text("Kill done!")
 
 
