@@ -1,5 +1,6 @@
 from bot.helper.worker import *
 import subprocess
+from pyrogram import enums
 
 
 @app.on_message(filters.private & filters.incoming & filters.media)
@@ -61,7 +62,7 @@ async def h(client, message: Message):
     out = ou if ou is not None else err
     outlist = [out[i:i + 4000] for i in range(0, len(out), 4000)]
     for i in outlist:
-        await message.reply_text(["Output: ", i])
+        await message.reply_text(["Output: ", i], parse_mode=enums.ParseMode.MARKDOWN)
     print("program output:", out)
 
 
