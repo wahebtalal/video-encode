@@ -38,7 +38,7 @@ def usage(id, duration):
 def usage(id):
     mycursor = mydb.cursor()
     mycursor.execute("select lim from Users where id = %s", [id])
-    return mycursor.fetchone()
+    return mycursor.fetchone()[0]
 
 
 def ban_change(id, ban):
