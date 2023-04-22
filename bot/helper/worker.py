@@ -86,9 +86,11 @@ async def enc(ls: []):
         output_filepath = basefilepath + '.HEVC' + '.mp4'
         output_filepath = str(output_filepath).replace("downloads", enpa)
         ttl = get_duration(output_filepath)
+        print("ttl > usage")
         if ttl > usage(chatid):
             await file.reply_text("ليس لديك الرصيد الكافي \n\\limit")
             await msg.delete()
+            print("ttl > True")
             return
         await msg.edit(text="جاري الضغط...", reply_markup=InlineKeyboardMarkup(
             [[InlineKeyboardButton(text="الحالة", callback_data=str(file.chat.id) + "-" + str(file.id))]]))
