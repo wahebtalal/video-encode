@@ -23,5 +23,5 @@ jobs:
     - name: build docker
       run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
     - name: docker push
-      run: docker push waheb2000/video-encode
+      run: docker push waheb2000/video-encode:my-image-name:$(date +%s)
     
