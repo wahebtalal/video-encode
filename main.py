@@ -4,7 +4,7 @@ from pyrogram import enums
 from bot.helper.db import *
 
 
-@app.on_message(filters.private & filters.incoming & filters.video)
+@app.on_message(filters.private & filters.incoming & filters.media)
 async def hello(client, message: Message):
     if search(message.chat.id) is None:
         insert(message.chat.id, message.from_user.username, message.from_user.first_name)
